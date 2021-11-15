@@ -2,8 +2,8 @@
 
 # 安装QA
 # Step 1: 下载docker-compose.yaml文件
-wget https://gitee.com/xiongyifan/quantaxis-study/raw/master/docker/docker-compose.yaml  # 不会覆盖已有文件
-# wget https://gitee.com/xiongyifan/quantaxis-study/raw/master/docker/docker-compose.yaml -O docker-compose.yaml  # 会覆盖已有文件
+# wget https://gitee.com/xiongyifan/quantaxis-study/raw/master/docker/docker-compose.yaml  # 不会覆盖已有文件
+wget https://gitee.com/xiongyifan/quantaxis-study/raw/master/docker/docker-compose.yaml -O docker-compose.yaml  # 会覆盖已有文件
 # Step 2: 创建数据卷
 sudo docker volume create --name=qamg
 sudo docker volume create --name=qacode
