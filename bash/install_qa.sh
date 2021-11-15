@@ -27,13 +27,13 @@ installNewPytdxQA(){
 		# 判断匹配函数，匹配函数不为0，则包含给定字符
 		if [ `sudo grep -c "${find_str}" ${find_file}` -ne '0' ];then
 			sudo docker cp ./pytdx-1.72r1-py3-none-any.whl ${container}:/root
-			sudo docker exec -it ${container} pip uninstall pytdx -y
-			sudo docker exec -it ${container} pip install /root/pytdx-1.72r1-py3-none-any.whl
+			sudo docker exec ${container} pip uninstall pytdx -y
+			sudo docker exec ${container} pip install /root/pytdx-1.72r1-py3-none-any.whl
 
 			if [ ${isInstallQA} = "true" ];then
 				sudo docker cp ./quantaxis-1.10.19r0-py3-none-any.whl ${container}:/root
-				sudo docker exec -it ${container} pip uninstall quantaxis -y
-				sudo docker exec -it ${container} pip install /root/quantaxis-1.10.19r0-py3-none-any.whl
+				sudo docker exec ${container} pip uninstall quantaxis -y
+				sudo docker exec ${container} pip install /root/quantaxis-1.10.19r0-py3-none-any.whl
 			fi
 			break
 		fi
