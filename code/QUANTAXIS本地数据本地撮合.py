@@ -1,18 +1,12 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
-
-
 import QUANTAXIS as QA
 from QAPUBSUB.consumer import subscriber  # 消费者
 from QAPUBSUB.producer import publisher  # 生产者
 import threading  # 在线程中运行消费者，防止线程阻塞
 import json  # 消费者接收的数据是文本，转成json
 import pandas as pd  # json转成DataFrame
-
-
-# In[2]:
 
 
 # 1. 账户准备
@@ -22,10 +16,6 @@ port = user.new_portfolio(portfolio_cookie='x1')
 # account_cookie就像是账户的id，init_cash是账户的初始资金，market_type为市场类型，QA中通过market_type预设了交易规则，例如期货允许t0等，与国内的交易规则一致。
 acc = port.new_account(account_cookie='test_local_simpledeal', init_cash=100000, market_type=QA.MARKET_TYPE.FUTURE_CN)
 
-
-# In[3]:
-
-
 # 2. 发单操作方法
 def sendorder(code, trade_price, trade_amount, trade_towards, trade_time):
 	acc.receive_simpledeal(
@@ -34,10 +24,6 @@ def sendorder(code, trade_price, trade_amount, trade_towards, trade_time):
 		trade_amount=trade_amount,
 		trade_towards=trade_towards,
 		trade_time=trade_time)
-
-
-# In[4]:
-
 
 # 3. 策略
 market_data_list = []  # 存储历史数据
@@ -82,18 +68,10 @@ def on_data(a, b, c, data):
     else:
         print('不操作')
 
-
-# In[5]:
-
-
 # 4. 订阅数据
 sub = subscriber(exchange='x1')  # Exchange名为x1，在15672页面能看到
 sub.callback=on_data  # 指定回调函数
 threading.Thread(target=sub.start).start()  # 开线程执行订阅，防止线程阻塞，后面的发布代码无法执行
-
-
-# In[6]:
-
 
 # 5. 数据获取并推送数据
 # 获取
@@ -103,42 +81,14 @@ pub = publisher(exchange='x1')  # 跟订阅的Exchange一致
 for idx, item in df.iterrows():
     pub.pub(item.to_json())  # 每行数据换成json，pub出去，上面的on_data就会收到，开始执行策略。
 
-
-# In[8]:
-
-
 # 6. 查看结果
 risk = QA.QA_Risk(acc)
 performance = QA.QA_Performance(acc)
 
-
-# In[9]:
-
-
 acc.history_table  # 交易记录
-
-
-# In[10]:
-
-
 risk.plot_assets_curve()  # 资产曲线
-
-
-# In[11]:
-
-
 performance.pnl  # 盈利情况
-
-
-# In[12]:
-
 
 # 7. 保存结果
 risk.save()
-
-
-# In[13]:
-
-
 acc.save()
-
