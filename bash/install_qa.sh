@@ -28,12 +28,12 @@ installNewPytdxQA(){
 		if [ `sudo grep -c "${find_str}" ${find_file}` -ne '0' ];then
 			sudo docker cp ./pytdx-1.72r1-py3-none-any.whl ${container}:/root
 			sudo docker exec ${container} pip uninstall pytdx -y
-			sudo docker exec ${container} pip install /root/pytdx-1.72r1-py3-none-any.whl
+			sudo docker exec ${container} pip install /root/pytdx-1.72r2-py3-none-any.whl
 
 			if [ ${isInstallQA} = "true" ];then
 				sudo docker cp ./quantaxis-1.10.19r0-py3-none-any.whl ${container}:/root
 				sudo docker exec ${container} pip uninstall quantaxis -y
-				sudo docker exec ${container} pip install /root/quantaxis-1.10.19r0-py3-none-any.whl
+				sudo docker exec ${container} pip install /root/quantaxis-1.10.19r3-py3-none-any.whl
 			fi
 			break
 		fi
