@@ -20,20 +20,22 @@ installNewPytdxQA(){
 	find_str=$1
 	container=$2
 	isInstallQA=$3
+    pydtxFileName="pytdx-1.72r2-py3-none-any.whl"
+    quantaxisFileName="quantaxis-1.10.19r3-py3-none-any.whl"
 	echo ${container}
 	find_file=`sudo docker inspect --format='{{.LogPath}}' ${container}`
 	while :
 	do
 		# 判断匹配函数，匹配函数不为0，则包含给定字符
 		if [ `sudo grep -c "${find_str}" ${find_file}` -ne '0' ];then
-			sudo docker cp ./pytdx-1.72r1-py3-none-any.whl ${container}:/root
+			sudo docker cp ./${pydtxFileName} ${container}:/root
 			sudo docker exec ${container} pip uninstall pytdx -y
-			sudo docker exec ${container} pip install /root/pytdx-1.72r2-py3-none-any.whl
+			sudo docker exec ${container} pip install /root/${pydtxFileName}
 
 			if [ ${isInstallQA} = "true" ];then
-				sudo docker cp ./quantaxis-1.10.19r0-py3-none-any.whl ${container}:/root
+				sudo docker cp ./${quantaxisFileName} ${container}:/root
 				sudo docker exec ${container} pip uninstall quantaxis -y
-				sudo docker exec ${container} pip install /root/quantaxis-1.10.19r3-py3-none-any.whl
+				sudo docker exec ${container} pip install /root/${quantaxisFileName}
 			fi
 			break
 		fi
