@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # 安装QA
 # 1. 下载docker-compose.yaml文件
@@ -22,12 +22,12 @@ pytdxFileName=''
 
 for fileName in $fileNames
 do
-	if [ ${fileName:0:5} == 'pytdx' ]
+	if [ `sudo echo $fileName | grep -c "pytdx"` -ne '0' ];
 	then
    		pytdxFileName=$fileName
   fi
 
-  if [ "${fileName:0:9}" == 'quantaxis' ]
+  if [ `sudo echo $fileName | grep -c "quantaxis"` -ne '0' ];
 	then
    		qaFileName=$fileName
   fi
