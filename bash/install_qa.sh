@@ -22,19 +22,16 @@ pytdxFileName=''
 
 for fileName in $fileNames
 do
-	if [ `sudo echo $fileName | grep -c "pytdx"` -ne '0' ];
+	if [ `echo $fileName | grep -c "pytdx"` -ne '0' ];
 	then
    		pytdxFileName=$fileName
   fi
 
-  if [ `sudo echo $fileName | grep -c "quantaxis"` -ne '0' ];
+  if [ `echo $fileName | grep -c "quantaxis"` -ne '0' ];
 	then
    		quantaxisFileName=$fileName
   fi
 done
-
-echo ${pytdxFileName}
-echo ${quantaxisFileName}
 
 # 4.2 安装函数
 installNewPytdxQA(){
