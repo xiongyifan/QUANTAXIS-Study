@@ -17,7 +17,7 @@ sudo docker-compose up -d
 # 4. 安装群文件中的pytdx，quantaxis
 # 4.1 获取pytdx，quantaxis的文件名
 fileNames=$(ls)
-qaFileName=''
+quantaxisFileName=''
 pytdxFileName=''
 
 for fileName in $fileNames
@@ -29,12 +29,12 @@ do
 
   if [ `sudo echo $fileName | grep -c "quantaxis"` -ne '0' ];
 	then
-   		qaFileName=$fileName
+   		quantaxisFileName=$fileName
   fi
 done
 
 echo ${pytdxFileName}
-echo ${qaFileName}
+echo ${quantaxisFileName}
 
 # 4.2 安装函数
 installNewPytdxQA(){
@@ -45,19 +45,19 @@ installNewPytdxQA(){
 	containerName=$2
 	# isInstallQA，是否安装群文件中的qa。qamarketcollector容器可以不安装群中qa版本，因为不影响使用。
 	isInstallQA=$3
-	echo ${containerName}
+	echo "在" ${containerName} "中重新安装" ${pytdxFileName} "和" ${quantaxisFileName}
 	# 找到容器对应的日志文件
 	findFile=$(sudo docker inspect --format='{{.LogPath}}' ${containerName})
-	echo ${findFile}
+	echo ${containerName} "容器的日志位置：" ${findFile}
 	# 在日志文件中不断的查到findStr，找到后说明容器已经初始化完成，可以开始安装qa和pytdx。
 	while :
 	do
 		# 判断匹配函数，匹配函数不为0，则包含给定字符
 		if [ `sudo grep -c "${findStr}" ${findFile}` -ne '0' ];then
 		  # 安装pytdx
-			sudo docker cp ./${pydtxFileName} ${containerName}:/root
+			sudo docker cp ./${pytdxFileName} ${containerName}:/root
 			sudo docker exec ${containerName} pip uninstall pytdx -y
-			sudo docker exec ${containerName} pip install /root/${pydtxFileName}
+			sudo docker exec ${containerName} pip install /root/${pytdxFileName}
 
       # 安装qa
 			if [ ${isInstallQA} = "true" ];then
